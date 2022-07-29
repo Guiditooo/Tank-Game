@@ -15,6 +15,7 @@ namespace ZapGames.TankGame
 
         #region PRIVATE VARIABLES
         private Rigidbody rb;
+        private bool floorHitted = false;
         #endregion
         #endregion
 
@@ -80,6 +81,19 @@ namespace ZapGames.TankGame
             if (rb.velocity.magnitude < actualSpeed.magnitude)
                 rb.AddForce(actualSpeed, ForceMode.Acceleration);
         }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (floorHitted) return;
+            if (collision.collider.tag == "Floor")
+            {
+                floorHitted = true;
+                //rb.constraints = RigidbodyConstraints.FreezeRotationX;
+                //rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+                
+            }
+        }
+
         #endregion
         #endregion
     }

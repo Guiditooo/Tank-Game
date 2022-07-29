@@ -12,6 +12,10 @@ namespace ZapGames.TankGame
 
         #region STATIC VARIABLES
 
+        public static Action<MovementDirection> OnMovementPress;
+        public static Action OnPausePress;
+        public static Action<Vector3> OnClicPress;
+
         #endregion
 
         #region PRIVATE VARIABLES
@@ -25,8 +29,7 @@ namespace ZapGames.TankGame
         #endregion
 
         #region STATIC METHODS
-        public static Action<MovementDirection> OnMovementPress;
-        public static Action OnPausePress;
+
         #endregion
 
         #region PRIVATE METHODS
@@ -47,6 +50,23 @@ namespace ZapGames.TankGame
             if (Input.GetKeyDown(KeyCode.P))
             {
                 OnPausePress?.Invoke();
+            }
+
+            if(Input.GetMouseButtonDown(0))
+            {
+                Vector3 pos = Vector3.zero;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                RaycastHit[] info;
+
+                info = Physics.RaycastAll(ray);
+
+                foreach (RaycastHit item in info)
+                {
+                    if (item.collider.tag == "Floor") OnClicPress?.Invoke(item.point); //Should enter only 1 time
+                }
+
             }
         }
         #endregion
