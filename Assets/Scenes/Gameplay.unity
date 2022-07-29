@@ -632,6 +632,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 5
   rotationSpeed: 3
+--- !u!114 &915529202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915529198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6f7f451aca0144cb8909c5717cdfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannon: {fileID: 7902906726751048704}
 --- !u!1 &953208146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,3 +1205,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42adbfc72a94a724b8f553ded62f3147, type: 3}
+--- !u!1 &7902906726751048704 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7902906726872726022, guid: 42adbfc72a94a724b8f553ded62f3147, type: 3}
+  m_PrefabInstance: {fileID: 7902906726751048703}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7902906726751048705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7902906726751048704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444bc21b8ff575745a2ab1faec7e10e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depressionAngle: -1
+  elevationAngle: 10
+  rotationSpeed: 10

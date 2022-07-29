@@ -54,8 +54,6 @@ namespace ZapGames.TankGame
 
             if(Input.GetMouseButtonDown(0))
             {
-                Vector3 pos = Vector3.zero;
-
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                 RaycastHit[] info;

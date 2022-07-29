@@ -64,7 +64,7 @@ namespace ZapGames.TankGame
         IEnumerator MoveCannon(Vector3 target) //Without clamping depression and elevation angles
         {
 
-            Quaternion targetRotation = Quaternion.FromToRotation(transform.position, target);
+            Quaternion targetRotation = Quaternion.FromToRotation(target,transform.position);
 
             float t = 0;
 
@@ -72,8 +72,8 @@ namespace ZapGames.TankGame
 
             while(t<1)
             {
-                Quaternion.Lerp(transform.rotation, targetRotation, t);
-                t += Time.deltaTime * rotationSpeed;
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
+                t += Time.deltaTime;
             }
 
             yield return null;
