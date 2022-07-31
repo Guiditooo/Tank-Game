@@ -13,6 +13,10 @@ namespace ZapGames.TankGame
         {
             InputManager.OnPausePress += PauseControl;
         }
+        private void OnDestroy()
+        {
+            InputManager.OnPausePress -= PauseControl;
+        }
 
         private void Start()
         {
@@ -31,9 +35,6 @@ namespace ZapGames.TankGame
                 OnPauseStateChange?.Invoke(actualState);
             }
         }
-        private void OnDestroy()
-        {
-            InputManager.OnPausePress -= PauseControl;
-        }
+        
     }
 }
