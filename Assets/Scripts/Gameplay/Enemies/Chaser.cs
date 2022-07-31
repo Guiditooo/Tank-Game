@@ -41,7 +41,6 @@ namespace ZapGames.TankGame
             {
                 Vector3 auxDirection = target.transform.position - transform.position;
                 rb.AddForce(auxDirection.normalized * Time.fixedDeltaTime * chasingSpeed);
-                Debug.Log("EMPUJO!");
             }
         }
         private void OnCollisionEnter(Collision collision)
@@ -52,7 +51,6 @@ namespace ZapGames.TankGame
 
             if (collision.collider.tag == "Floor")
             {
-                Debug.Log("IMPULSO!");
                 Vector3 auxDirection = target.transform.position - transform.position;
                 auxDirection.Normalize();
                 rb.AddForce(auxDirection * Time.fixedDeltaTime * chasingSpeed * 3, ForceMode.Impulse);

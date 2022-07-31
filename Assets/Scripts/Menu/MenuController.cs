@@ -75,6 +75,7 @@ namespace ZapGames.TankGame
         }
         public void CloseGame()
         {
+            Debug.Log("SALIENGO DEL JUEGO");
             Application.Quit();
         }
 
