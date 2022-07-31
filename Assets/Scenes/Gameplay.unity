@@ -1224,4 +1224,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   depressionAngle: -1
   elevationAngle: 10
-  rotationSpeed: 10
+  rotationSpeed: 0.5

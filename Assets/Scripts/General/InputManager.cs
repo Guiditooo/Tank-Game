@@ -45,6 +45,21 @@ namespace ZapGames.TankGame
                 if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) OnMovementPress?.Invoke(MovementDirection.Left);
 
                 else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) OnMovementPress?.Invoke(MovementDirection.Right);
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                    RaycastHit[] info;
+
+                    info = Physics.RaycastAll(ray);
+
+                    foreach (RaycastHit item in info)
+                    {
+                        if (item.collider.tag == "Floor") OnClicPress?.Invoke(item.point); //Should enter only 1 time
+                    }
+
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.P))
@@ -52,20 +67,7 @@ namespace ZapGames.TankGame
                 OnPausePress?.Invoke();
             }
 
-            if(Input.GetMouseButtonDown(0))
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                RaycastHit[] info;
-
-                info = Physics.RaycastAll(ray);
-
-                foreach (RaycastHit item in info)
-                {
-                    if (item.collider.tag == "Floor") OnClicPress?.Invoke(item.point); //Should enter only 1 time
-                }
-
-            }
+            
         }
         #endregion
         #endregion

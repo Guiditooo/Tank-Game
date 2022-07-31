@@ -72,11 +72,12 @@ namespace ZapGames.TankGame
 
             while(t<1)
             {
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
-                t += Time.deltaTime;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, t);
+                t += Time.deltaTime * rotationSpeed;
+                yield return null;
             }
 
-            yield return null;
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 1);
 
             movingCannon = false;
 
