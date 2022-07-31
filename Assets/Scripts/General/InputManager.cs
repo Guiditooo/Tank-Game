@@ -62,7 +62,7 @@ namespace ZapGames.TankGame
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
             {
                 OnPausePress?.Invoke();
             }
