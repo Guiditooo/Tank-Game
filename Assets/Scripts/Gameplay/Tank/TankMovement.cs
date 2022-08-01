@@ -30,6 +30,10 @@ namespace ZapGames.TankGame
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
+            
+        }
+        private void Start()
+        {
             InputManager.OnMovementPress += Move;
         }
         private void OnDestroy()
@@ -59,25 +63,29 @@ namespace ZapGames.TankGame
 
         private void TurnLeft()
         {
-            Vector3 actualRotation = (-transform.up * rotationSpeed);
+            //Debug.LogError("Mover Izq");
+            Vector3 actualRotation = -transform.up * rotationSpeed * Time.deltaTime;
             if(rb.angularVelocity.magnitude < actualRotation.magnitude)
                 rb.AddTorque(actualRotation, ForceMode.Force);
         }
         private void TurnRight()
         {
-            Vector3 actualRotation = (transform.up * rotationSpeed);
+            //Debug.LogError("Mover Der");
+            Vector3 actualRotation = transform.up * rotationSpeed * Time.deltaTime;
             if (rb.angularVelocity.magnitude < actualRotation.magnitude)
                 rb.AddTorque(actualRotation, ForceMode.Force);
         }
         private void Accelerate()
         {
-            Vector3 actualSpeed = transform.forward * maxSpeed;
+            Vector3 actualSpeed = transform.forward * maxSpeed * Time.deltaTime;
+            //Debug.LogError("Mover adelante " + rb.velocity.magnitude + " " + actualSpeed.magnitude);
             if (rb.velocity.magnitude < actualSpeed.magnitude)
-                rb.AddForce(actualSpeed, ForceMode.Acceleration);
+                rb.AddForce(actualSpeed/*, ForceMode.Acceleration*/);
         }
         private void Brake()
         {
-            Vector3 actualSpeed = -transform.forward * maxSpeed/2;
+            //Debug.LogError("Mover atras");
+            Vector3 actualSpeed = -transform.forward * maxSpeed/ 2 * Time.deltaTime;
             if (rb.velocity.magnitude < actualSpeed.magnitude)
                 rb.AddForce(actualSpeed, ForceMode.Acceleration);
         }
