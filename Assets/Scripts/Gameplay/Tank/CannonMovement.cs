@@ -52,10 +52,9 @@ namespace ZapGames.TankGame
         private void AlignCannonWithTarget(Vector3 newTarget)
         {
 
-            if(cannonMovementCoroutine!=null) StopCoroutine(MoveCannon(actualTarget)); //Cancels actual movement
+            if(movingCannon) return; //Cancels actual movement
 
-            cannonMovementCoroutine = MoveCannon(newTarget);
-            StartCoroutine(cannonMovementCoroutine); //Starts a new corroutine with the new direction as target
+            StartCoroutine(MoveCannon(newTarget)); //Starts a new corroutine with the new direction as target
 
             actualTarget = newTarget;
 
@@ -63,51 +62,87 @@ namespace ZapGames.TankGame
 
         IEnumerator MoveCannon(Vector3 target) //Without clamping depression and elevation angles
         {
-            Vector3 targetDirection = target - tankTransform.position;
+            Vector3 targetDirection = target - transform.position;
             Quaternion targetRotation = Quaternion.FromToRotation(transform.forward, targetDirection.normalized);
+            
+            float targetAngleQ = Quaternion.Angle(transform.rotation, targetRotation);
+            float targetAngleV = Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up);
 
-            float targetAngle = Quaternion.Angle(transform.rotation, targetRotation);
-            //Debug.Log("Posicion objetivo> " + target + " - ANGLE WITH CANNON POS> " + targetAngle);
+            Debug.Log("TargetAngleQ> " + targetAngleQ + " / TargetAngleV> " + targetAngleV);
 
-            float auxAngle = transform.rotation.eulerAngles.y;
+            float startingAngle = tankTransform.rotation.eulerAngles.y;
+            float auxAngle = 0;
+            Quaternion auxRotation = transform.rotation;
 
-            Debug.Log("Empieza en " + auxAngle + " Y debe llegar a " + targetAngle);
+            bool moveRight = ShouldMoveRight(transform.forward, target);
 
-            while (auxAngle < targetAngle)
+            Debug.Log("Forward del Canon> " + transform.forward);
+
+            movingCannon = true;
+            //float t = 0;
+
+
+
+            while (auxAngle + startingAngle < targetAngleV + startingAngle)
+            //while (t < 1)
             {
-                
-                transform.rotation = (target.x < tankTransform.position.x) ? Quaternion.Euler(0, -auxAngle, 0) : Quaternion.Euler(0, auxAngle, 0);
+                //transform.rotation = (target.x < tankTransform.position.x) ? Quaternion.Euler(0, -auxAngle, 0) : Quaternion.Euler(0, auxAngle, 0);
+                transform.rotation = moveRight ? Quaternion.Euler(0, -auxAngle - startingAngle, 0) : Quaternion.Euler(0, auxAngle + startingAngle, 0);
+                //transform.rotation = Quaternion.RotateTowards(auxRotation, targetRotation, Time.deltaTime * rotationSpeed);
+                //transform.rotation = Quaternion.AngleAxis(auxAngle, transform.up);
+                //auxAngle += Time.deltaTime * rotationSpeed;
+                //transform.rotation = Quaternion.Lerp(auxRotation, targetRotation, t);
+                //t += Time.deltaTime/* * rotationSpeed*/;
                 auxAngle += Time.deltaTime * rotationSpeed;
+
                 yield return null;
             }
-            transform.rotation = (target.x < tankTransform.position.x) ? Quaternion.Euler(0, -targetAngle, 0) : Quaternion.Euler(0, targetAngle, 0);
 
-
-            //Quaternion actualRotation = transform.rotation;
-            //float actualRotation = transform.rotation.y;
-            //while (t<1)
-            //{
-            //    transform.rotation = new Quaternion(transform.rotation.x, Mathf.Lerp(actualRotation, targetRotation.y, t), transform.rotation.z, transform.rotation.w);
-            //    //transform.rotation = Quaternion.Lerp(actualRotation, targetRotation, t);
-            //    t += Time.deltaTime * rotationSpeed;
-            //    yield return null;
-            //}
-            //transform.rotation = new Quaternion(transform.rotation.x, Mathf.Lerp(actualRotation, targetRotation.y, t), transform.rotation.z, transform.rotation.w);
-            //transform.rotation = Quaternion.Lerp(actualRotation, targetRotation, 1);
+            //transform.rotation = (target.x < tankTransform.position.x) ? Quaternion.Euler(0, -targetAngle, 0) : Quaternion.Euler(0, targetAngle, 0);
+            transform.rotation = moveRight ? Quaternion.Euler(0, -targetAngleV - startingAngle, 0) : Quaternion.Euler(0, targetAngleV + startingAngle, 0);
+            //transform.rotation = Quaternion.AngleAxis(targetAngle, transform.up);
+            //transform.rotation = Quaternion.Lerp(auxRotation, targetRotation, 1);
 
             TargetAligned?.Invoke(); // Once the cannon is aligned with the cannon, it is able to shoot.
 
+            StartCoroutine(ResetCannonPosition());
+
         }
 
-        IEnumerator MoveCannonY(Transform target) // Ill separate the movement of both X & Y axis.
+        bool ShouldMoveRight(Vector3 vec, Vector3 p)
+        {
+            Vector3 newVec = vec - p;
+            return Vector3.Cross(newVec, vec).y < 0;
+        }
+
+        IEnumerator ResetCannonPosition()
         {
             float t = 0;
+            Quaternion auxRotation = transform.rotation;
+
             while (t < 1)
             {
-                t += Time.deltaTime * rotationSpeed;
+                transform.rotation = Quaternion.Lerp(auxRotation, tankTransform.rotation, t);
+                t += Time.deltaTime/* * rotationSpeed*/;
+                yield return null;
             }
-            yield return null;
+
+            transform.rotation = Quaternion.Lerp(auxRotation, tankTransform.rotation, 1);
+
+            movingCannon = false;
+
+            Debug.Log("Volvi a mi lugar");
         }
+
+        //IEnumerator MoveCannonY(Transform target) // Ill separate the movement of both X & Y axis.
+        //{
+        //    float t = 0;
+        //    while (t < 1)
+        //    {
+        //        t += Time.deltaTime * rotationSpeed;
+        //    }
+        //    yield return null;
+        //}
 
         #endregion
         #endregion
